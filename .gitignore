@@ -83,3 +83,6 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+# Connection string for database
+app/src/main/res/values/connection_stringS
