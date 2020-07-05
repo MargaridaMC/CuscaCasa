@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     suspend fun getReadings(){
-        val connectionString = getString(R.string.connection_string)
+        val connectionString = ""// getString(R.string.connection_string)
         val readings = withContext(Dispatchers.IO){
              connection.getNReadings(connectionString, 10)
         }
