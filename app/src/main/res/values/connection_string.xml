@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Fill in your connection string here-->
-    <item name="connection_string" type="string">test string</item>
+    <item name="connection_string" type="string">another test string</item>
 </resources>
