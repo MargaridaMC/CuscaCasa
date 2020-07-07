@@ -1,6 +1,6 @@
-package net.teamtruta.iotappp.db
+package net.teamtruta.cuscacasa.db
 
-import net.teamtruta.iotappp.SensorReading
+import net.teamtruta.cuscacasa.SensorReading
 import java.sql.Connection
 import java.sql.DriverManager
 import java.util.*
@@ -9,9 +9,6 @@ class AzureSQLDatabaseConnection {
     fun getNReadings(url : String, n: Int): List<SensorReading> {
         val readings: MutableList<SensorReading> =
             ArrayList()
-
-        // u: bmejota
-        // p: 145Dffsdasgaszzzz
 
         // Connect to database
 

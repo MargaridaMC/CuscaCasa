@@ -1,10 +1,10 @@
-package net.teamtruta.iotappp
+package net.teamtruta.cuscacasa
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
-import net.teamtruta.iotappp.db.AzureSQLDatabaseConnection
+import net.teamtruta.cuscacasa.db.AzureSQLDatabaseConnection
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +22,12 @@ class MainActivity : AppCompatActivity() {
             getReadings()
         }
 
+        // To get instance of database
+        /*val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "database-name"
+        ).build()
+*/
     }
 
     suspend fun getReadings(){

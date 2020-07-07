@@ -1,4 +1,4 @@
-package net.teamtruta.iotappp
+package net.teamtruta.cuscacasa
 
 import org.junit.Test
 
