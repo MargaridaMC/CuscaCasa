@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CuscaCasa</string>
+    <string name="no_connection">No connection to the internet</string>
+    <string name="fetching_data">Fetching data</string>
 </resources>

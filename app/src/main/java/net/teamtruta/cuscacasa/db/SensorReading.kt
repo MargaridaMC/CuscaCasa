@@ -1,14 +1,14 @@
-package net.teamtruta.cuscacasa
+package net.teamtruta.cuscacasa.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "sensor_reading")
 data class SensorReading (
     val deviceId: String,
     val readingTime: String,
-    val IAQ: String,
-    val IAQState: String,
+    val iAQ: String,
+    val iAQState: String,
     val temperature: String,
     val relativeHumidity: String,
     val pressure: String,
@@ -16,4 +16,6 @@ data class SensorReading (
     val staticIAQ: String,
     val eCO2: String,
     val bVOCe: String,
-    @PrimaryKey(autoGenerate = true) val uid: Int = 0)
+    @PrimaryKey(autoGenerate = true)
+    val uid: Int = 0
+    )

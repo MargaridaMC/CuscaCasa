@@ -1,6 +1,6 @@
-package net.teamtruta.cuscacasa.db
+package net.teamtruta.cuscacasa.network
 
-import net.teamtruta.cuscacasa.SensorReading
+import net.teamtruta.cuscacasa.db.SensorReading
 import java.sql.Connection
 import java.sql.DriverManager
 import java.util.*
