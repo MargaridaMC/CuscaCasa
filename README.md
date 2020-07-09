@@ -18,3 +18,11 @@ For the code to compile a file called `connection_string.xml` must be created in
 ```
 
 You can obtain this connection string from the Azure Portal. Remember to add the right prefix as per the example above.
+
+## Build Pipeline
+
+The app is built automatically (CI/CD) using Azure DevOps, and the builds distributed using Microsoft AppCenter. This is the current setup of the pipeline:
+
+<img src="https://github.com/MargaridaMC/CuscaCasa/blob/master/docs/azure-devops-build-pipeline.png?raw=true" width="400">
+
+If you want to reproduce it, remember that when using private repos the connection to GitHub (when doing GetSources) must use the GitHub repo's owner's credentials.
