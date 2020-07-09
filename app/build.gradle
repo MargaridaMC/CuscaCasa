@@ -28,6 +28,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }*/
+    /*repository {
+        jcenter()
+    }*/
+}
+
+repositories {
+    jcenter()
 }
 
 dependencies {
@@ -65,9 +72,18 @@ dependencies {
     implementation "com.google.android.material:material:$rootProject.materialVersion"
 
 // Testing
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
 
     // Room Explorer
     implementation 'com.wajahatkarim3:roomexplorer:0.0.2'
+
+    // Koda Time
+    implementation 'joda-time:joda-time:2.10.2'
+    implementation 'com.github.debop:koda-time:2.0.0'
+
+    // App Centre
+    def appCenterSdkVersion = '3.2.2'
+    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 }

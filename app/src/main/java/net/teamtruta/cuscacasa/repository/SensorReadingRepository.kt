@@ -22,10 +22,12 @@ class SensorReadingRepository(private val database: AppDatabase) {
                 throw DataRefreshError("Unable to refresh data", cause)
             }
 
+            for(reading in readingsFromCloud){
+                database.sensorReadingDao.insert(reading)
+            }
+
         }
-        for(reading in readingsFromCloud){
-            database.sensorReadingDao.insert(reading)
-        }
+
     }
 
     private fun getReadingsFromCloud(connectionString : String) : List<SensorReading> {
