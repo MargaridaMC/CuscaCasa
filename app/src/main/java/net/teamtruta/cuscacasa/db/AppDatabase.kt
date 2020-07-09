@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase
 abstract class AppDatabase : RoomDatabase() {
 
     // Dao for sensor readings
-    abstract fun sensorReadingDao(): SensorReadingDao
+    abstract val sensorReadingDao: SensorReadingDao
     var context: Context? = null
 
     companion object{

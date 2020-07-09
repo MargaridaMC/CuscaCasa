@@ -1,10 +1,12 @@
 package net.teamtruta.cuscacasa.viewmodels
 
 import android.app.Application
+import android.graphics.DiscretePathEffect
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -13,14 +15,15 @@ import net.teamtruta.cuscacasa.R
 import net.teamtruta.cuscacasa.db.SensorReading
 import net.teamtruta.cuscacasa.repository.SensorReadingRepository
 import net.teamtruta.cuscacasa.db.AppDatabase
-import java.io.IOException
+import net.teamtruta.cuscacasa.repository.DataRefreshError
+import java.sql.SQLException
 
 class SensorReadingViewModel(application: Application) : AndroidViewModel(application) {
 
     private val TAG = SensorReadingViewModel::class.simpleName
 
     private val viewModelJob = SupervisorJob()
-    private val viewModelScope = CoroutineScope(viewModelJob)
+    //private val viewModelScope = CoroutineScope(viewModelJob + Dispatchers.IO)
     private var _eventNetworkError = MutableLiveData<Boolean>(false)
     val eventNetworkError: LiveData<Boolean>
         get() = _eventNetworkError
@@ -28,30 +31,27 @@ class SensorReadingViewModel(application: Application) : AndroidViewModel(applic
     val isNetworkErrorShown: LiveData<Boolean>
         get() = _isNetworkErrorShown
 
-    private val repository : SensorReadingRepository
-    var readings : LiveData<List<SensorReading>>? = null
+    private val repository : SensorReadingRepository = SensorReadingRepository(
+        AppDatabase.getDatabase(application)
+    )
+    var readings : LiveData<List<SensorReading>> = repository.readings
+    private val app = application
 
-    init {
-        val sensorReadingDao = AppDatabase.getDatabase(application).sensorReadingDao()
-        repository =
-            SensorReadingRepository(
-                sensorReadingDao
-            )
-
-        if(repository.readings == null || repository.readings?.value.isNullOrEmpty()){
-            viewModelScope.launch {
-                try{
-                    repository.refreshReadings(application.resources.getString(R.string.connection_string))
-                } catch (e : Exception){
-                    e.printStackTrace()
-                    Log.e(TAG , "Couldn't get readings from cloud.")
-                }
+    fun refreshData(){
+        viewModelScope.launch {
+            try {
+                repository.refreshReadings(app.resources.getString(R.string.connection_string))
+                _eventNetworkError.value = false
+                _isNetworkErrorShown.value = false
+            } catch (error: DataRefreshError) {
+                _eventNetworkError.value = true
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e(TAG, "Couldn't get readings from cloud.")
             }
-
         }
-
-        readings = repository.readings
     }
+
 
     /**
      * Cancel all coroutines when the ViewModel is cleared
@@ -60,4 +60,12 @@ class SensorReadingViewModel(application: Application) : AndroidViewModel(applic
         super.onCleared()
         viewModelJob.cancel()
     }
+
+    /**
+     * Resets the network error flag.
+     */
+    fun onNetworkErrorShown() {
+        _isNetworkErrorShown.value = true
+    }
+
 }

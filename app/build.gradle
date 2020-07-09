@@ -68,4 +68,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
 
+    // Room Explorer
+    implementation 'com.wajahatkarim3:roomexplorer:0.0.2'
 }

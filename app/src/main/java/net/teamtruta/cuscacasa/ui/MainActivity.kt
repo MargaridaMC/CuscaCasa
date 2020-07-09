@@ -1,9 +1,9 @@
 package net.teamtruta.cuscacasa.ui
 
-import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,29 +15,46 @@ import net.teamtruta.cuscacasa.viewmodels.SensorReadingViewModel
 class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.simpleName
+    private lateinit var sensorReadingViewModel: SensorReadingViewModel
+    private lateinit var activity: MainActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val connected = isNetworkConnected()
-        if(!connected){
-            text_view.text = getString(R.string.no_connection)
-            return
-        }
+        //RoomExplorer.show(this, AppDatabase::class.java, "AppDatabase")
 
-        val sensorReadingViewModel = ViewModelProvider(this).get(SensorReadingViewModel::class.java)
+        /*val database = AppDatabase.getDatabase(this)
+        val repository = SensorReadingRepository(database)
+        val readings = repository.readings
+        val value = readings.value*/
 
+        activity = this
+        sensorReadingViewModel = ViewModelProvider(activity).get(SensorReadingViewModel::class.java)
         text_view.text = getString(R.string.fetching_data)
-        sensorReadingViewModel.readings?.observe(this, Observer { readings ->
+        sensorReadingViewModel.readings.observe(this, Observer { readings ->
             Log.d(TAG, "Live Data observed")
             text_view.text = readings.map{it.toString()}.toString()
         })
+
+        // Observer for the network error.
+        sensorReadingViewModel.eventNetworkError.observe(this, Observer<Boolean> { isNetworkError ->
+            if (isNetworkError) onNetworkError()
+        })
     }
 
-    private fun isNetworkConnected(): Boolean {
-        val cm =
-            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        return cm.activeNetworkInfo != null
+    /**
+     * Method for displaying a Toast error message for network errors.
+     */
+    private fun onNetworkError() {
+        if(!sensorReadingViewModel.isNetworkErrorShown.value!!) {
+            Toast.makeText(activity, "Network Error", Toast.LENGTH_LONG).show()
+            sensorReadingViewModel.onNetworkErrorShown()
+        }
     }
+
+    fun refreshData(view: View) {
+        sensorReadingViewModel.refreshData()
+    }
+
 }
