@@ -16,6 +16,7 @@ import net.teamtruta.cuscacasa.db.SensorReading
 import net.teamtruta.cuscacasa.repository.SensorReadingRepository
 import net.teamtruta.cuscacasa.db.AppDatabase
 import net.teamtruta.cuscacasa.repository.DataRefreshError
+import org.joda.time.DateTime
 import java.sql.SQLException
 
 class SensorReadingViewModel(application: Application) : AndroidViewModel(application) {
@@ -35,6 +36,7 @@ class SensorReadingViewModel(application: Application) : AndroidViewModel(applic
         AppDatabase.getDatabase(application)
     )
     var readings : LiveData<List<SensorReading>> = repository.readings
+    lateinit var readingDateTime : LiveData<DateTime>
     private val app = application
 
     fun refreshData(){
@@ -43,6 +45,7 @@ class SensorReadingViewModel(application: Application) : AndroidViewModel(applic
                 repository.refreshReadings(app.resources.getString(R.string.connection_string))
                 _eventNetworkError.value = false
                 _isNetworkErrorShown.value = false
+                readingDateTime = MutableLiveData(DateTime.now())
             } catch (error: DataRefreshError) {
                 _eventNetworkError.value = true
             } catch (e: Exception) {

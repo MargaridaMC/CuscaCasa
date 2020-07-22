@@ -7,15 +7,15 @@ import androidx.room.PrimaryKey
 data class SensorReading (
     val deviceId: String,
     val readingTime: String,
-    val iAQ: String,
-    val iAQState: String,
-    val temperature: String,
-    val relativeHumidity: String,
-    val pressure: String,
-    val gas: String,
-    val staticIAQ: String,
-    val eCO2: String,
-    val bVOCe: String,
+    val iAQ: Double,
+    val iAQState: Double,
+    val temperature: Double,
+    val relativeHumidity: Double,
+    val pressure: Double,
+    val gas: Double,
+    val staticIAQ: Double,
+    val eCO2: Double,
+    val bVOCe: Double,
     @PrimaryKey(autoGenerate = true)
     val uid: Int = 0
     )

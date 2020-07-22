@@ -5,7 +5,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.teamtruta.cuscacasa.db.AppDatabase
 import net.teamtruta.cuscacasa.db.SensorReading
-import net.teamtruta.cuscacasa.db.SensorReadingDao
 import net.teamtruta.cuscacasa.network.AzureSQLDatabaseConnection
 
 class SensorReadingRepository(private val database: AppDatabase) {
@@ -14,7 +13,7 @@ class SensorReadingRepository(private val database: AppDatabase) {
 
     suspend fun refreshReadings(connectionString : String){
 
-        var readingsFromCloud : List<SensorReading> = mutableListOf()
+        var readingsFromCloud: List<SensorReading>
         withContext(Dispatchers.IO){
             try{
                 readingsFromCloud = getReadingsFromCloud(connectionString)

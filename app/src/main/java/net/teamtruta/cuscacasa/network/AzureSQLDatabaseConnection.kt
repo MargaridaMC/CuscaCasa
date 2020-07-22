@@ -3,7 +3,6 @@ package net.teamtruta.cuscacasa.network
 import net.teamtruta.cuscacasa.db.SensorReading
 import java.sql.Connection
 import java.sql.DriverManager
-import java.sql.SQLException
 import java.util.*
 
 class AzureSQLDatabaseConnection {
@@ -12,10 +11,7 @@ class AzureSQLDatabaseConnection {
             ArrayList()
 
         // Connect to database
-
-        val connection: Connection
-        //try {
-            connection = DriverManager.getConnection(url)
+        val connection: Connection = DriverManager.getConnection(url)
 
             // Create and execute a SELECT SQL statement.
             val selectSql = "SELECT TOP ($n) [DeviceId], [ReadingTime]," +
@@ -38,19 +34,15 @@ class AzureSQLDatabaseConnection {
                     while (resultSet.next()) {
                         val reading = SensorReading(
                             resultSet.getString(1),
-                            resultSet.getString(2), resultSet.getString(3),
-                            resultSet.getString(4), resultSet.getString(5),
-                            resultSet.getString(6), resultSet.getString(7),
-                            resultSet.getString(8), resultSet.getString(9),
-                            resultSet.getString(10), resultSet.getString(11)
+                            resultSet.getString(2), resultSet.getDouble(3),
+                            resultSet.getDouble(4), resultSet.getDouble(5),
+                            resultSet.getDouble(6), resultSet.getDouble(7),
+                            resultSet.getDouble(8), resultSet.getDouble(9),
+                            resultSet.getDouble(10), resultSet.getDouble(11)
                         )
                         readings.add(reading)
                     }
                     connection.close()
-                /*} catch (e: Exception) {
-            e.printStackTrace()
-            throw SQLException("Some exception occurred $e")
-        }*/
         return readings
     }
 }
